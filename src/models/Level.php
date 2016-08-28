@@ -16,6 +16,8 @@ class Level extends Model {
     private string $flag,
     private string $hint,
     private int $penalty,
+    private int $max_tries,
+    private string $recap_message,
     private string $created_ts,
   ) {}
 
@@ -75,6 +77,14 @@ class Level extends Model {
     return $this->penalty;
   }
 
+  public function getMaxTries(): int {
+    return $this->max_tries;
+  }
+
+  public function getRecapMessage(): string {
+    return $this->recap_message;
+  }
+
   public function getCreatedTs(): string {
     return $this->created_ts;
   }
@@ -95,6 +105,8 @@ class Level extends Model {
       must_have_idx($row, 'flag'),
       must_have_idx($row, 'hint'),
       intval(must_have_idx($row, 'penalty')),
+      intval(must_have_idx($row, 'max_tries')),
+      must_have_idx($row, 'recap_message'),
       must_have_idx($row, 'created_ts'),
     );
   }
@@ -166,6 +178,8 @@ class Level extends Model {
     string $flag,
     string $hint,
     int $penalty,
+    int $max_tries,
+    string $recap_message,
   ): Awaitable<int> {
     $db = await self::genDb();
 
@@ -176,8 +190,9 @@ class Level extends Model {
     }
     await $db->queryf(
       'INSERT INTO levels '.
-      '(type, title, description, entity_id, category_id, points, bonus, bonus_dec, bonus_fix, flag, hint, penalty, active, created_ts) '.
-      'VALUES (%s, %s, %s, %d, %d, %d, %d, %d, %d, %s, %s, %d, %d, NOW())',
+      '(type, title, description, entity_id, category_id, points, bonus, bonus_dec, bonus_fix, flag, hint,
+        penalty, max_tries, recap_message, active, created_ts) '.
+      'VALUES (%s, %s, %s, %d, %d, %d, %d, %d, %d, %s, %s, %d, %d, %s, %d, NOW())',
       $type,
       $title,
       $description,
@@ -190,6 +205,8 @@ class Level extends Model {
       $flag,
       $hint,
       $penalty,
+      $max_tries,
+      $recap_message,
       0, // active
     );
 
@@ -223,6 +240,8 @@ class Level extends Model {
     int $bonus_dec,
     string $hint,
     int $penalty,
+    int $max_tries,
+    string $recap_message,
   ): Awaitable<int> {
     return await self::genCreate(
       'flag',
@@ -237,6 +256,8 @@ class Level extends Model {
       $flag,
       $hint,
       $penalty,
+      $max_tries,
+      $recap_message,
     );
   }
 
@@ -253,6 +274,8 @@ class Level extends Model {
     string $hint,
     int $penalty,
     int $level_id,
+    int $max_tries,
+    string $recap_message,
   ): Awaitable<void> {
     await self::genUpdate(
       $title,
@@ -411,6 +434,8 @@ class Level extends Model {
     string $flag,
     string $hint,
     int $penalty,
+    int $max_tries,
+    string $recap_message,
     int $level_id,
   ): Awaitable<void> {
     $db = await self::genDb();
@@ -423,8 +448,8 @@ class Level extends Model {
 
     await $db->queryf(
       'UPDATE levels SET title = %s, description = %s, entity_id = %d, category_id = %d, points = %d, '.
-      'bonus = %d, bonus_dec = %d, bonus_fix = %d, flag = %s, hint = %s, '.
-      'penalty = %d WHERE id = %d LIMIT 1',
+      'bonus = %d, bonus_dec = %d, bonus_fix = %d, flag = %s, hint = %s, penalty = %d, '.
+      'max_tries = %d, recap_message = %s WHERE id = %d LIMIT 1',
       $title,
       $description,
       $ent_id,
@@ -436,6 +461,8 @@ class Level extends Model {
       $flag,
       $hint,
       $penalty,
+      $max_tries,
+      $recap_message,
       $level_id,
     );
 

@@ -47,6 +47,8 @@ CREATE TABLE `levels` (
   `flag` text NOT NULL,
   `hint` text NOT NULL,
   `penalty` int(11) NOT NULL,
+  `max_tries` int(11) NOT NULL,
+  `recap_message` text NOT NULL,
   `created_ts` timestamp NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

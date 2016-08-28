@@ -1189,6 +1189,20 @@ class AdminController extends Controller {
                     <input name="penalty" type="text" />
                   </div>
                 </div>
+                <div class="form-el fb-column-container col-gutters">
+                  <div class="col col-1-2 el--block-label el--full-text">
+                    <label>{tr('Recap message')}</label>
+                    <textarea
+                      name="recap_message"
+                      placeholder={tr('Message on success or max incorrect attempts')}
+                      rows={4}>
+                    </textarea>
+                  </div>
+                  <div class="col col-1-2 el--block-label el--full-text">
+                    <label>{tr('Max Attempts')}</label>
+                    <input name="asdf" type="text" placeholder="Blank or 0 for unlimited"/>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="admin-buttons admin-row">
